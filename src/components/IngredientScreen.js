@@ -13,27 +13,23 @@ import CONFIG from '../../config'
 class IngredientScreen extends React.Component {
 	constructor(props) {
     super(props);
-    // this.state = {
-    // 	imageUri: undefined,
-    // 	imageHeight: undefined,
-    // 	imageWidth: undefined,
-    // };
-
     this.state = {
-    	buttonTitle: 'YOLO',
-    	imageUri: 'https://facebook.github.io/react/img/logo_og.png',
-    	imageHeight: 400,
-    	imageWidth: 400,
+    	loading: null,
+    	imageUri: undefined,
+    	imageHeight: undefined,
+    	imageWidth: undefined,
     };
   }
-
 
   static navigationOptions = {
     title: 'Ingredient Screen',
   };
 
-  test = () => {
-  	return fetch('https://api.cognitive.microsoft.com/bing/v5.0/images/search?q=broccoli&count=1&safeSearch=strict&mkt=en-US', {
+  fetchNewIngredient = () => {
+  	this.setState({ loading: true })
+  	const veggies = ['broccoli', 'peas and carrots', 'carrot', 'lima bean', 'potato', 'edamame', 'soybeans', 'Cowpeas (blackeyes)', 'Garlic', 'Asparagus', 'spinach', 'bamboo shoots']
+  	const queryString = veggies[(Math.random() * veggies.length ) << 0]
+  	return fetch(`https://api.cognitive.microsoft.com/bing/v5.0/images/search?q=${queryString}&count=1`, {
 		  method: 'POST',
 		  headers: {
 		  	'Accept': 'application/json',
@@ -44,23 +40,33 @@ class IngredientScreen extends React.Component {
 		}).then((responseData)=> {
     	const _responseData = responseData.value[0]
     	this.setState({
-    		buttonTitle: _responseData.name,
+    		buttonTitle: queryString,
     		imageUri: _responseData.thumbnailUrl,
     		imageWidth: _responseData.thumbnail.width,
     		imageHeight: _responseData.thumbnail.height,
+    		loading: false,
     	})
     }).catch((err) => {
 		    console.error('Encountered error making request:', err);
 		});
   }
 
+  renderLoadingScreen = () => {
+  	return <Image source={require('ChowRoulette/src/assets/loading.gif')} />
+  }
+
   render() {
-  	const { buttonTitle, imageUri, imageWidth, imageHeight } = this.state
-  	console.log("rendering", imageUri, imageWidth, imageHeight)
-    return <View style={{ flex: 1 }}>
-    	{imageUri && <Image source={{uri: imageUri }} style={{width: imageWidth, height: imageHeight}} />}
-    	<Button onPress={this.test} title={buttonTitle} />
-    </View>;
+  	const { buttonTitle, imageUri, imageWidth, imageHeight, loading } = this.state
+    return loading ? this.renderLoadingScreen() :
+    	<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+	    	<View style={{ flex: 0.9, alignItems: 'center', justifyContent: 'center' }}>
+	    		{imageUri && <Image source={{uri: imageUri }} style={{width: imageWidth, height: imageHeight}} />}
+	    		<Text>{buttonTitle}</Text>
+	    	</View>
+	    	<View style={{ flex: 0.1 }}>
+	    		<Button onPress={this.fetchNewIngredient} title='Keep Going' />
+	    	</View>
+	    </View>;
   }
 }
 

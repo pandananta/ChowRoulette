@@ -13,8 +13,8 @@ class HomeScreen extends React.Component {
   };
   render() {
   	const { navigate } = this.props.navigation;
-    return <View>
-    	<Text>Home Screen</Text>
+    return <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    	<Text>You pick a nutrient to focus on. I`ll suggest an ingredient!</Text>
     	<Button
           onPress={() => navigate('Ingredient')}
           title="Got it!"
