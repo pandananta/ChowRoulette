@@ -52,10 +52,11 @@ class IngredientScreen extends React.Component {
   }
 
   renderLoadingScreen = () => {
-  	return <Image source={require('ChowRoulette/src/assets/loading.gif')} />
+  	return <Image source={require('ChowRoulette/src/assets/images/loading.gif')} />
   }
 
   render() {
+  	//TODO: add props for the veggie and the category and the descriptor text
   	const { buttonTitle, imageUri, imageWidth, imageHeight, loading } = this.state
     return loading ? this.renderLoadingScreen() :
     	<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
