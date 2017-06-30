@@ -9,8 +9,10 @@ import {
 } from 'react-native';
 
 import CONFIG from '../../config'
+import filter from 'lodash/filter'
 import sample from 'lodash/sample'
 import split from 'lodash/split'
+import isEmpty from 'lodash/isEmpty'
 
 class IngredientScreen extends React.Component {
 	constructor(props) {
@@ -21,77 +23,111 @@ class IngredientScreen extends React.Component {
     	imageHeight: undefined,
     	imageWidth: undefined,
     	foods: undefined,
-    	foodName: undefined,
-    	foodDescription: undefined,
+    	currentFood: undefined,
     };
-  }
-
-  componentDidMount() {
-  	const nutrientId = this.props.navigation.state.params.id
-  	const apiUrl = `https://api.nal.usda.gov/ndb/nutrients/?format=json&api_key=${CONFIG.USDA_API_KEY}&nutrients=${nutrientId}&max=25&sort=c&fg=1100`
-  	fetch(apiUrl).then((response) => {
-			return response.json();
-		}).then((responseData)=> {
-    	this.setState({ foods: responseData.report.foods })
-    	this.fetchNewIngredient()
-    }).catch((err) => {
-		    console.error('Encountered error making request:', err);
-		});
   }
 
   static navigationOptions = {
     title: 'Ingredient Screen',
   };
 
-  fetchNewIngredient = () => {
-  	this.setState({ loading: true })
-  	const food = sample(this.state.foods)
-  	const foodNutrients = food.nutrients[0]
-  	const description = `${food.name} has ${foodNutrients.value} ${foodNutrients.unit} of ${foodNutrients.nutrient} per ${food.measure}`
-  	const foodNameTruncated = split(food.name, ',')[0]
-
-  	return fetch(`https://api.cognitive.microsoft.com/bing/v5.0/images/search?q=${foodNameTruncated}&count=1`, {
-		  method: 'POST',
-		  headers: {
-		  	'Accept': 'application/json',
-		    'Ocp-Apim-Subscription-Key': CONFIG.BING_API_KEY,
-		  },
-		}).then((response) => {
+  componentDidMount() {
+  	const { foodGroupId, nutrientId } = this.props.navigation.state.params
+  	const apiUrl = `https://api.nal.usda.gov/ndb/nutrients/?format=json&api_key=${CONFIG.USDA_API_KEY}&nutrients=${nutrientId}&max=30&sort=c&fg=${foodGroupId}`
+  	fetch(apiUrl).then((response) => {
 			return response.json();
 		}).then((responseData)=> {
-    	const _responseData = responseData.value[0]
-    	this.setState({
-    		foodName: foodNameTruncated,
-    		foodDescription: description,
-    		imageUri: _responseData.thumbnailUrl,
-    		imageWidth: _responseData.thumbnail.width,
-    		imageHeight: _responseData.thumbnail.height,
-    		loading: false,
-    	})
+			let foods = responseData.report.foods
+			foods = filter(foods, (food) => parseFloat(food.nutrients[0].value))
+    	this.setState({ foods })
+    	this.fetchNewIngredient()
     }).catch((err) => {
 		    console.error('Encountered error making request:', err);
 		});
+  }
+
+  massageFoodName = (foodName) => {
+  	let foodNameParts = split(foodName, ',')  
+  	return foodNameParts[0] === 'beans' ? `${foodNameParts[1]} ${foodNameParts[0]}` : foodNameParts[0]
+  }
+
+  fetchNewIngredient = () => {
+  	this.setState({ loading: true })
+  	setTimeout(() => {
+  		// Add an artificial delay so it feels more thoughtful?
+  		if (!isEmpty(this.state.foods)) {
+		  	const food = sample(this.state.foods)
+		  	const queryString = this.massageFoodName(food.name)
+
+		  	return fetch(`https://api.cognitive.microsoft.com/bing/v5.0/images/search?q=${queryString}&count=10`, {
+				  method: 'POST',
+				  headers: {
+				  	'Accept': 'application/json',
+				    'Ocp-Apim-Subscription-Key': CONFIG.BING_API_KEY,
+				  },
+				}).then((response) => {
+					return response.json();
+				}).then((responseData)=> {
+		    	const _responseData = sample(responseData.value)
+		    	this.setState({
+		    		currentFood: food,
+		    		imageUri: _responseData.thumbnailUrl,
+		    		imageWidth: _responseData.thumbnail.width,
+		    		imageHeight: _responseData.thumbnail.height,
+		    		loading: false,
+		    	})
+		    }).catch((err) => {
+				    console.error('Encountered error making request:', err);
+				});
+	  	} else {
+	  		this.setState({ loading: false })
+	  	}
+  	}, 1000)
   }
 
   renderLoadingScreen = () => {
   	return <Image source={require('ChowRoulette/src/assets/images/loading.gif')} />
   }
 
+  renderFoodDescription = () => {
+  	const { currentFood } = this.state
+  	const foodNutrients = currentFood.nutrients[0]
+
+  	return <Text style={{ fontSize: 20, textAlign: 'center', marginTop: 20 }}>
+  		<Text style={{ fontWeight: 'bold' }}>"{currentFood.name}" </Text>
+  		<Text>have </Text>
+  		<Text style={{ fontWeight: 'bold' }}>{foodNutrients.value} </Text>
+  		<Text style={{ fontWeight: 'bold' }}>{foodNutrients.unit} </Text>
+  		<Text>of </Text>
+  		<Text>{foodNutrients.nutrient} </Text>
+  		<Text>per </Text>
+  		<Text>{currentFood.measure}</Text>
+  	</Text>
+  }
+
   render() {
-  	const { foodName, foodDescription, imageUri, imageWidth, imageHeight, loading } = this.state
-    const { id, name } = this.props.navigation.state.params
+  	const { currentFood, imageUri, imageWidth, imageHeight, loading } = this.state
+    const { nutrientId, nutrientName, foodGroupName } = this.props.navigation.state.params
+  	const onPress = currentFood ? this.fetchNewIngredient : this.props.navigation.goBack.bind(this, null)
+  	const buttonTitle = currentFood ? 'Try Again' : 'Go Back'
+
     return loading ? this.renderLoadingScreen() :
-    	<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-    		<View style={{ flex: 0.1 }}>
-	    		<Text>Vegetable Products high in {name}</Text>
-	    	</View>
-	    	<View style={{ flex: 0.8, alignItems: 'center', justifyContent: 'center' }}>
-	    		<Text>{foodName}</Text>
+    	<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 20 }}>
+	    	{currentFood && <View style={{ flex: 0.9, alignItems: 'center' }}>
+	    		<Text style={{ fontSize: 30, fontWeight: 'bold', color: 'green', textAlign: 'center', marginBottom: 20 }}>
+	    			{this.massageFoodName(currentFood.name)}!
+	    		</Text>
 	    		{imageUri && <Image source={{uri: imageUri }} style={{width: imageWidth, height: imageHeight}} />}
-	    		<Text>{foodDescription}</Text>
-	    	</View>
+	    		{currentFood && this.renderFoodDescription()}
+	    	</View>}
+	    	{!currentFood && <View style={{ flex: 0.9, alignItems: 'center' }}>
+	    		<Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>
+	    			Could not find any {foodGroupName} with {nutrientName} :(
+	    		</Text>
+	    	</View>}
 	    	<View style={{ flex: 0.1 }}>
-	    		<Button onPress={this.fetchNewIngredient} title='Keep Going' />
+	    		<Button onPress={onPress} title={buttonTitle} />
+	    		{currentFood && <Text>Tap for another {nutrientName} suggestion</Text>}
 	    	</View>
 	    </View>;
   }

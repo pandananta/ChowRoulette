@@ -742,7 +742,7 @@ export default [
   {
     usdaId: 262,
     name: 'Caffeine',
-    visible: false,
+    visible: true,
   },
   {
     usdaId: 263,

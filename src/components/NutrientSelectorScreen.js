@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  AppRegistry,
-  Button,
-  Text,
-  View,
-  ScrollView,
-  FlatList,
-} from 'react-native';
+import { Button, FlatList } from 'react-native';
 
 import filter from 'lodash/filter'
 import nutrients from 'ChowRoulette/src/assets/json/nutrients.js'
@@ -23,7 +16,7 @@ class NutrientSelectorScreen extends React.Component {
       data={menuItems}
       keyExtractor={(item) => item.usdaId}
       renderItem={({item}) => <Button
-        onPress={() => navigate('Ingredient', {id: item.usdaId, name: item.name})}
+        onPress={() => navigate('FoodGroup', { nutrientId: item.usdaId, nutrientName: item.name })}
         title={item.name}
       />}
     />;
