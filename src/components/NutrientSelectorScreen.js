@@ -1,6 +1,4 @@
 import React from 'react';
-import filter from 'lodash/filter'
-
 import {
   AppRegistry,
   Button,
@@ -10,6 +8,7 @@ import {
   FlatList,
 } from 'react-native';
 
+import filter from 'lodash/filter'
 import nutrients from 'ChowRoulette/src/assets/json/nutrients.js'
 
 class NutrientSelectorScreen extends React.Component {
@@ -17,20 +16,17 @@ class NutrientSelectorScreen extends React.Component {
     title: 'Pick a Nutrient',
   };
   render() {
-    //TODO: add a json file with all the nutrients
-    //turn this view into a list and pass the props to Ingredient screen
-    // handle the state and loading in this view? 
   	const { navigate } = this.props.navigation;
-    // const menuItems = filter(nutrients, { visible: true })
+    const menuItems = filter(nutrients, { visible: true })
 
-    // <FlatList
-     //    data={menuItems}
-     //    renderItem={({item}) => <Text>{item.name}</Text>}
-     //  />
-
-    return <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-    	<Text>YOLO</Text>
-    </View>;
+    return  <FlatList
+      data={menuItems}
+      keyExtractor={(item) => item.usdaId}
+      renderItem={({item}) => <Button
+        onPress={() => navigate('Ingredient', {id: item.usdaId, name: item.name})}
+        title={item.name}
+      />}
+    />;
   }
 }
 

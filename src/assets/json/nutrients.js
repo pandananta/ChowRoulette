@@ -737,12 +737,12 @@ export default [
   {
     usdaId: 221,
     name: 'Alcohol, ethyl',
-    visible: true,
+    visible: false,
   },
   {
     usdaId: 262,
     name: 'Caffeine',
-    visible: true,
+    visible: false,
   },
   {
     usdaId: 263,
