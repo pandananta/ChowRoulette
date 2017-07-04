@@ -2,12 +2,12 @@ export default [
 	{
     usdaId: 255,
     name: 'Water',
-    visible: true,  
+    visible: false,  
   },
   {
     usdaId: 208,
     name: 'Energy',
-    visible: true,  
+    visible: false,  
   },
   {
     usdaId: 268,
@@ -27,7 +27,7 @@ export default [
   {
     usdaId: 204,
     name: 'Total Lipid (fat)',
-    visible: true,  
+    visible: false,  
   },
   {
     usdaId: 207,
@@ -41,13 +41,13 @@ export default [
   },
   {
     usdaId: 291,
-    name: 'Fiber, total dietary',
+    name: 'Fiber',
     visible: true,  
   },
   {
     usdaId: 269,
     name: 'Sugars, total',
-    visible: true,  
+    visible: false,  
   },
   {
     usdaId: 210,
@@ -82,7 +82,7 @@ export default [
   {
     usdaId: 209,
     name: 'Starch',
-    visible: true,  
+    visible: false,  
   },
   {
     usdaId: 301,
@@ -112,7 +112,7 @@ export default [
   {
     usdaId: 307,
     name: 'Sodium',
-    visible: true,  
+    visible: false,  
   },
   {
     usdaId: 309,
@@ -742,7 +742,7 @@ export default [
   {
     usdaId: 262,
     name: 'Caffeine',
-    visible: true,
+    visible: false,
   },
   {
     usdaId: 263,

@@ -2,7 +2,7 @@ export default [
   {
     usdaId: '1800',
     name: 'Baked Products',
-    visible: true,  
+    visible: false,  
   },
   {
     usdaId: '1300',
@@ -17,12 +17,12 @@ export default [
   {
     usdaId: '2000',
     name: 'Cereal Grains and Pasta',
-    visible: true,  
+    visible: false,  
   },
   {
     usdaId: '0100',
     name: 'Dairy and Eggs Products',
-    visible: true,  
+    visible: false,  
   },
   {
     usdaId: '2100',
