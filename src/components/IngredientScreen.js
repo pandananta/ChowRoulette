@@ -146,8 +146,8 @@ class IngredientScreen extends React.Component {
 	    		</Text>
 	    	</View>}
 	    	<View style={{ flex: 0.1 }} >
-	    		<TouchableOpacity style={styles.button} onPress={onPress}>
-	    			<Text style={styles.buttonText} >{buttonTitle}</Text>
+	    		<TouchableOpacity onPress={onPress}>
+	    			<Text style={styles.button} >{buttonTitle}</Text>
 	    		</TouchableOpacity>
 	    	</View>
 	    </View>;
@@ -181,12 +181,11 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 	},
   button: {
-    paddingVertical: 10,
+  	paddingVertical: 10,
     paddingHorizontal: 20,
     backgroundColor: theme.color.primary,
     borderRadius: 8,
-  },
-  buttonText: {
+    overflow: 'hidden',
   	color: theme.color.light,
     fontSize: 20,
     fontFamily: theme.fontFamily.primary,
