@@ -12,10 +12,7 @@ import IngredientScreen from './src/components/IngredientScreen';
 
 const defaultNavOptions = {
   headerBackTitle: null,
-  headerTintColor: 'white',
-  headerStyle: {
-    backgroundColor: 'yellowgreen',
-  }
+  headerTintColor: 'black',
 }
 
 const ChowRoulette = StackNavigator({

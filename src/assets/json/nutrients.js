@@ -202,7 +202,7 @@ export default [
   {
     usdaId: 418,
     name: 'Vitamin B12',
-    visible: false,  
+    visible: true,
   },
   {
     usdaId: 578,
