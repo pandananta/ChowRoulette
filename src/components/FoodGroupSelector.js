@@ -7,8 +7,7 @@ import foodGroups from 'ChowRoulette/src/assets/json/foodGroups.js'
 class FoodGroupSelectorScreen extends React.Component {
   render() {
     /* Currently skipping this screen since the data is much better for vegetables */
-  	const { navigate, state } = this.props.navigation
-    const { nutrientId, nutrientName } = state.params
+    const { navigate, nutrientId, nutrientName } = this.props
     const relevantFoodGroups = filter(foodGroups, { visible: true })
 
     return  <FlatList

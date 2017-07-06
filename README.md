@@ -12,7 +12,7 @@ When you tap a nutrient from the last, the app queries the USDA api for the top 
 
 ## Why just veggies?
 
-Originally the app supported every good group, but the USDA data is not as uniform or helpful for other food groups. For example, the "Beef Products" food group mostly returns different preparations of beef with roughly equvialent nutritional breakdown ... so it's not as useful if you're trying to decide what ingredients to toss in your pasta or salad. Eventually I'd like to build out my own API that includes data about diet compatilbility, daily nutritional needs, and excludes repeats and artificial foods. For now, hat tip to the USDA for making their data publicly available for free.
+Originally the app supported every good group, but the USDA data is not as uniform or helpful for other food groups. For example, the "Beef Products" food group mostly returns different preparations of beef with roughly equvialent nutritional breakdown ... so it's not as useful if you're trying to decide what ingredients to toss in your pasta or salad. Eventually I'd like to build out my own API that includes data about diet compatilbility, daily nutritional needs, and more consistent human-readable names. For now, hat tip to the USDA for making their data publicly available for free.
 
 ## Challenge
 
