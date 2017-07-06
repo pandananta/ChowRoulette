@@ -1,0 +1,5 @@
+export default {
+  BING_API_KEY: 'blahblahblahblah',
+  USDA_API_KEY: 'blahblahblahblah',
+  DISABLE_BING: false,
+}

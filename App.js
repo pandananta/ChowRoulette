@@ -5,10 +5,10 @@ import {
 } from 'react-native';
 
 import { StackNavigator } from 'react-navigation';
-import HomeScreen from './src/components/HomeScreen';
-import FoodGroupSelectorScreen from './src/components/FoodGroupSelectorScreen';
-import NutrientSelectorScreen from './src/components/NutrientSelectorScreen';
-import IngredientScreen from './src/components/IngredientScreen';
+import FoodGroupSelectorScreen from './src/screens/FoodGroupSelectorScreen';
+import HomeScreen from './src/screens/HomeScreen';
+import IngredientScreen from './src/screens/IngredientScreen';
+import NutrientSelectorScreen from './src/screens/NutrientSelectorScreen';
 
 const defaultNavOptions = {
   headerBackTitle: null,
@@ -18,22 +18,19 @@ const defaultNavOptions = {
 const ChowRoulette = StackNavigator({
   Home: { 
     screen: HomeScreen,
-    navigationOptions: ({navigation}) => ({ ...defaultNavOptions }),
+    navigationOptions: ({navigation}) => ({ ...defaultNavOptions, title: 'Chow Roulette' }),
   },
   FoodGroup: { 
     screen: FoodGroupSelectorScreen,
-    navigationOptions: ({navigation}) => ({ ...defaultNavOptions }),
+    navigationOptions: ({navigation}) => ({ ...defaultNavOptions, title: 'Pick a Food Group', }),
   },
   Nutrient: { 
     screen: NutrientSelectorScreen,
-    navigationOptions: ({navigation}) => ({ ...defaultNavOptions }),
+    navigationOptions: ({navigation}) => ({ ...defaultNavOptions, title: 'Pick a Nutrient' }),
   },
   Ingredient: { 
     screen: IngredientScreen,
-    navigationOptions: ({navigation}) => ({
-      ...defaultNavOptions,
-      title: `Veggies with ${navigation.state.params.nutrientName}`,
-    }),
+    navigationOptions: ({navigation}) => ({ ...defaultNavOptions, title: `Veggies with ${navigation.state.params.nutrientName}`}),
   },
 }, {
   headerMode: 'screen',

@@ -2,10 +2,10 @@ import React from 'react';
 
 import {
   AppRegistry,
-  TouchableOpacity,
-  Text,
-  View,
   StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 
 import theme from 'ChowRoulette/src/assets/styles/theme.js'
@@ -20,13 +20,17 @@ class HomeScreen extends React.Component {
   	
     return <View style={styles.container}>
     	<Text style={styles.description}>
-        You pick a nutrient to focus on. I`ll suggest an ingredient!
+        You pick a nutrient to focus on, I will suggest an ingredient!
       </Text>
     	<TouchableOpacity onPress={() => navigate('Nutrient')}>
         <Text style={styles.button}>Got it!</Text>
       </TouchableOpacity>
     </View>;
   }
+}
+
+HomeScreen.propTypes = {
+  navigation: React.PropTypes.object.isRequired,
 }
 
 const styles = StyleSheet.create({
