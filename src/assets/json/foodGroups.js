@@ -6,7 +6,7 @@ export default [
   },
   {
     usdaId: '1300',
-    name: 'Beef Products ',
+    name: 'Beef Products',
     visible: false,  
   },
   {

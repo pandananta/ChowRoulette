@@ -68,7 +68,7 @@ class IngredientDeck extends React.Component {
 	    		loading: false,
 	    	})
 			} else {
-		  	fetch(`https://api.cognitive.microsoft.com/bing/v5.0/images/search?q=${nameMassaged}&count=10`, {
+		  	fetch(`https://api.cognitive.microsoft.com/bing/v5.0/images/search?q=${nameMassaged}&count=5`, {
 				  method: 'POST',
 				  headers: {
 				  	'Accept': 'application/json',
