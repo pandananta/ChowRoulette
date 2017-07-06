@@ -11,10 +11,6 @@ import {
 import theme from 'ChowRoulette/src/assets/styles/theme.js'
 
 class HomeScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Chow Roulette',
-  }
-
   render() {
   	const { navigate } = this.props.navigation;
   	
