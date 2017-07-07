@@ -26,7 +26,7 @@ const ChowRoulette = StackNavigator({
   },
   Ingredient: {
     screen: IngredientScreen,
-    navigationOptions: ({ navigation }) => ({ ...defaultNavOptions, title: `Veggies with ${navigation.state.params.nutrientName}` }),
+    navigationOptions: ({ navigation }) => ({ ...defaultNavOptions, title: navigation.state.params.nutrientName }),
   },
 }, {
   headerMode: 'screen',
